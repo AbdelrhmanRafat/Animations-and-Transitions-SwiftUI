@@ -8,27 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var circleColorChanged = false
-    @State private var heartColorChanged = false
-    @State private var heartSizeChanged = false
-    //You Define Two State of view and swiftUI Will figure out the rest.
+    @State private var isLoading = false
+    //Loading Indicator Using Rotation Effect.
     var body: some View {
-        ZStack {
-            Circle()
-                .frame(width: 200, height: 200, alignment: .center)
-                .foregroundColor(circleColorChanged ? Color(.systemGray) : .red)
-            Image(systemName: "heart.fill")
-                .foregroundColor(heartColorChanged ? .red : .white)
-                .font(.system(size: 100))
-                .scaleEffect(heartSizeChanged ? 1.0 : 0.5)
-        }
-        .onTapGesture { // On Tap Gesture could be attached to any view make it Tappable
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.3, blendDuration: 0.3)){ // Damping Effect.
-                self.circleColorChanged.toggle()
-                self.heartColorChanged.toggle()
-                self.heartSizeChanged.toggle()
+        Circle()
+            .trim(from: 0.0, to: 0.7)
+            .stroke(Color.green,lineWidth: 5)
+            .frame(width: 100, height: 100, alignment: .center)
+            .rotationEffect(Angle(degrees: isLoading ? 360.0 : 0.0))// Two States that the Loading status will control.
+            //Repeat Forever Repeat Animation again and again.
+            .animation(Animation.default.repeatForever(autoreverses: false))
+            .onAppear(){
+                self.isLoading = true
             }
-        }
     }
 }
 
