@@ -17,17 +17,17 @@ struct ContentView: View {
             Circle()
                 .frame(width: 200, height: 200, alignment: .center)
                 .foregroundColor(circleColorChanged ? Color(.systemGray) : .red)
-                .animation(.default)// Built in Animation.
             Image(systemName: "heart.fill")
                 .foregroundColor(heartColorChanged ? .red : .white)
                 .font(.system(size: 100))
                 .scaleEffect(heartSizeChanged ? 1.0 : 0.5)
-                .animation(.default)
         }
-        .onTapGesture {
-            self.circleColorChanged.toggle()
-            self.heartColorChanged.toggle()
-            self.heartSizeChanged.toggle()
+        .onTapGesture { // On Tap Gesture could be attached to any view make it Tappable
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.3, blendDuration: 0.3)){ // Damping Effect.
+                self.circleColorChanged.toggle()
+                self.heartColorChanged.toggle()
+                self.heartSizeChanged.toggle()
+            }
         }
     }
 }
