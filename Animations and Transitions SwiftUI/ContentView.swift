@@ -8,22 +8,36 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var isLoading = false
-    //Dot Loading Indicator.
+    @State private var recordBegin = false
+    @State private var recording = false
+    //Transforming Rectangle into Circle.
     var body: some View {
-        HStack {
-            ForEach(0...4, id : \.self) {
-                index in
-                Circle()
-                    .fill(Color.green)
-                    .frame(width: 10, height: 100, alignment: .center)
-                    .scaleEffect(self.isLoading ? 0 : 1)
-                    .animation(Animation.linear(duration: 0.6).repeatForever().delay(Double(index)))
+        ZStack {
+            // Rounded Rectangle Transfer to circle..When the corner redius be equal to half of Frame Width..
+            RoundedRectangle(cornerRadius: recordBegin ? 30 : 5) // Corner Redius is 5 at the begin for Rectangle
+                .frame(width: recordBegin ? 60 : 250, height: 60, alignment: .center) // Rectangle redius is 250 at the begin
+                .foregroundColor(recordBegin ? .red : .green) // Rectangle color is green at the begin.
+            RoundedRectangle(cornerRadius: recordBegin ? 35 : 10)
+                .trim(from: 0, to: recordBegin ? 0 : 1)
+                .stroke(lineWidth: 5)
+                    .frame(width: recordBegin ? 70 : 260, height: 70, alignment: .center)
+            .foregroundColor(.green)
+            .overlay(
+                Image(systemName: "mic.fill") // Over Lay Mic Image on Rectangle
+                    .font(.system(.title))
+                    .foregroundColor(.white)
+                    .scaleEffect(recording ? 0.7 : 1) // Mic Scale Changed between 0.7 and 1 with spring Animation..
+                )
+        }
+        .onTapGesture {
+            withAnimation(Animation.spring()){
+                self.recordBegin.toggle()
+            }
+            withAnimation(Animation.spring().repeatForever().delay(0.5)){ // Delay Used to show spring animation for mic after transfer from rectangle to circle done
+                self.recording.toggle()
             }
         }
-        .onAppear(){
-            self.isLoading = true
-        }
+        
     }
 }
 
@@ -32,3 +46,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
