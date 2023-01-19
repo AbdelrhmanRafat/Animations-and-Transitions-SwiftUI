@@ -32,7 +32,7 @@ struct ContentView: View {
                     .foregroundColor(.white)
                 )
                 // Extend Any Transition
-                .transition(.offsetScaleOpacity)
+                .transition(.ScaleAndOffset)
            }
        }
         .onTapGesture {
@@ -53,5 +53,9 @@ extension AnyTransition {
     static var offsetScaleOpacity : AnyTransition {
         //You can combine two or more transitions together by calling the combined (with : ) method.
         AnyTransition.offset(x: -600, y: 0).combined(with: .scale).combined(with: .opacity)
+    }
+    //Symmatric Transition Means that the insertion and removal of the view has the same transition Asymmetric Transition detrmine transition for removal and insertion.
+    static var ScaleAndOffset : AnyTransition {
+        AnyTransition.asymmetric(insertion: .scale(scale: 0, anchor: .bottom), removal: .offset(x: -600, y: 0))
     }
 }
