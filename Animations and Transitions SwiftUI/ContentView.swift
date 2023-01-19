@@ -31,7 +31,8 @@ struct ContentView: View {
                     .bold()
                     .foregroundColor(.white)
                 )
-                .transition(.offset(x: -600, y: 0)) 
+                // Extend Any Transition
+                .transition(.offsetScaleOpacity)
            }
        }
         .onTapGesture {
@@ -48,3 +49,9 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+extension AnyTransition {
+    static var offsetScaleOpacity : AnyTransition {
+        //You can combine two or more transitions together by calling the combined (with : ) method.
+        AnyTransition.offset(x: -600, y: 0).combined(with: .scale).combined(with: .opacity)
+    }
+}
