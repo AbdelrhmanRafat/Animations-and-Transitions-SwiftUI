@@ -31,6 +31,7 @@ struct ContentView: View {
                     .bold()
                     .foregroundColor(.white)
                 )
+                .transition(.offset(x: -600, y: 0)) 
            }
        }
         .onTapGesture {
